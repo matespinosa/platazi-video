@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Header from '../components/Header';
 import '../assets/styles/App.scss';
 import Search from '../components/Search';
@@ -14,8 +14,8 @@ const Home = () => {
   const initialState = useInitialState(API)
 
   return initialState.length === 0 ? <h1>loading...</h1> : (
-    <div className="App">
-      <Header />
+    <>
+     
       <Search />
       {initialState.mylist !== undefined && initialState.mylist.length > 0 && (
         <Categories title="Mi lista">
@@ -46,8 +46,8 @@ const Home = () => {
         </Carousel>
       </Categories>
 
-      <Footer />
-    </div>
+      
+    </>
   )
 };
 
