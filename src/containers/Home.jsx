@@ -1,28 +1,28 @@
-import React, { Fragment } from 'react';
-import Header from '../components/Header';
+import React from 'react';
+import { connect } from 'react-redux';
 import '../assets/styles/App.scss';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import Footer from '../components/Footer';
-import useInitialState from '../hooks/useInitialState';
 
-const API = 'http://localhost:3000/initialState';
 
-const Home = () => {
-  const initialState = useInitialState(API)
+const Home = ({ myList, trends, originals }) => {
 
-  return initialState.length === 0 ? <h1>loading...</h1> : (
+  return (
     <>
      
       <Search />
-      {initialState.mylist !== undefined && initialState.mylist.length > 0 && (
+      {myList !== undefined && myList.length > 0 && (
         <Categories title="Mi lista">
           <Carousel>
-            {initialState.mylist !== undefined &&
-              initialState.mylist.map(item => 
-                <CarouselItem key={item.id} {...item}/>
+            {myList !== undefined &&
+              myList.map(item => 
+                <CarouselItem
+                  key={item.id}
+                  {...item}
+                  isList
+                />
               )}
           </Carousel>
         </Categories>)
@@ -30,8 +30,8 @@ const Home = () => {
 
       <Categories title="Tendencias">
         <Carousel>
-          {initialState.trends !== undefined &&
-            	initialState.trends.map(item => 
+          {trends !== undefined &&
+            	trends.map(item => 
             <CarouselItem key={item.id} {...item}/>
           )}
         </Carousel>
@@ -39,8 +39,8 @@ const Home = () => {
 
       <Categories title="Originales de Platzi Video">
         <Carousel>
-          {initialState.originals !== undefined &&
-            initialState.originals.map(item => 
+          {originals !== undefined &&
+            originals.map(item => 
               <CarouselItem key={item.id} {...item}/>
           )}
         </Carousel>
@@ -51,4 +51,12 @@ const Home = () => {
   )
 };
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);
